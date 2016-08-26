@@ -1,0 +1,16 @@
+# Editorconfig for consistent coding styles
+# http://editorconfig.org
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.php]
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+[*.{json,yml}]
+charset = utf-8
+indent_style = space
+indent_size = 2

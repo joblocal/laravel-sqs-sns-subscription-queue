@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Joblocal">
+  <description>Coding standard based on PSR2</description>
+  <exclude-pattern>vendor/*</exclude-pattern>
+  <rule ref="PSR2"/>
+</ruleset>
