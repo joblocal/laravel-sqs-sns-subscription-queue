@@ -3,16 +3,17 @@
 namespace Joblocal\LaravelSqsSnsSubscriptionQueue\Tests;
 
 use Orchestra\Testbench\TestCase;
+use Illuminate\Queue\QueueManager;
 
-use Joblocal\LaravelSqsSnsSubscriptionQueue\Provider\ServiceProvider;
+use Joblocal\LaravelSqsSnsSubscriptionQueue\SqsSnsServiceProvider;
 use Joblocal\LaravelSqsSnsSubscriptionQueue\Queue\Connectors\SqsSnsConnector;
 
-class ServiceProviderTest extends TestCase
+class SqsSnsServiceProviderTest extends TestCase
 {
     protected function getPackageProviders($app)
     {
         return [
-            'Joblocal\LaravelSqsSnsSubscriptionQueue\Provider\ServiceProvider',
+            'Joblocal\LaravelSqsSnsSubscriptionQueue\SqsSnsServiceProvider',
         ];
     }
 
@@ -27,19 +28,6 @@ class ServiceProviderTest extends TestCase
             'routes' => [],
         ]);
         $app['config']->set('queue.default', 'sqs-sns');
-    }
-
-    public function testWillCallRegisterManager()
-    {
-        $provider = $this->getMockBuilder(ServiceProvider::class)
-            ->setConstructorArgs([$this->app])
-            ->setMethods(['registerManager'])
-            ->getMock();
-
-        $provider->expects($this->once())
-            ->method('registerManager');
-
-        $provider->register();
     }
 
     public function testWillRegisterSqsSnsQueueConnector()

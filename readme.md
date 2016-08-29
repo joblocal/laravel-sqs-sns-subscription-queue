@@ -15,7 +15,7 @@ Add the LaravelSqsSnsSubscriptionQueue Provider
 to your bootstrap, in Lumen you would add:
 
 ```php
-$app->register(Joblocal\LaravelSqsSnsSubscriptionQueue\Provider\ServiceProvider::class);
+$app->register(Joblocal\LaravelSqsSnsSubscriptionQueue\SqsSnsServiceProvider::class);
 ```
 
 You'll need to configure the queue connection in your config/queue.php
