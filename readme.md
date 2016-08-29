@@ -11,6 +11,13 @@ adds a new queue connector which allows you to work with [SQS](https://aws.amazo
 
 ## Usage
 
+Add the LaravelSqsSnsSubscriptionQueue Provider
+to your bootstrap, in Lumen you would add:
+
+```php
+$app->register(Joblocal\LaravelSqsSnsSubscriptionQueue\Provider\ServiceProvider::class);
+```
+
 You'll need to configure the queue connection in your config/queue.php
 
 ```php
