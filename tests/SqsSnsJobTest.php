@@ -37,8 +37,9 @@ class SqsSnsJobTest extends TestCase
         $this->sqsSnsJob = new SqsSnsJob(
             $this->container,
             $this->sqsClient,
-            'default_queue',
             $payload,
+            'connection_name',
+            'default_queue',
             $routes
         );
     }
@@ -74,10 +75,11 @@ class SqsSnsJobTest extends TestCase
         $defaultSqsJob = new SqsSnsJob(
             $this->container,
             $this->sqsClient,
-            'default_queue',
             [
                 'Body' => json_encode($body),
             ],
+            'connection_name',
+            'default_queue',
             []
         );
 
