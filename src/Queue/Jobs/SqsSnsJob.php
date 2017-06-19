@@ -16,11 +16,12 @@ class SqsSnsJob extends SqsJob
      * @param \Aws\Sqs\SqsClient $sqs
      * @param string $queue
      * @param array $job
+     * @param string $connectionName
      * @param array $routes
      */
-    public function __construct(Container $container, SqsClient $sqs, $queue, array $job, array $routes)
+    public function __construct(Container $container, SqsClient $sqs, array $job, $connectionName, $queue, array $routes)
     {
-        parent::__construct($container, $sqs, $queue, $job);
+        parent::__construct($container, $sqs, $job, $connectionName, $queue);
 
         $this->job = $this->resolveSnsSubscription($this->job, $routes);
     }
