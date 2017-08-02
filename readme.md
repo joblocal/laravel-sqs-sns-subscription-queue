@@ -46,5 +46,5 @@ The best way to install laravel-sqs-sns-subscription is by using [Composer](http
 To install the most recent version, you can run the following command:
 
 ```sh
-php composer.phar require joblocal/laravel-sqs-sns-subscription
+php composer.phar require joblocal/laravel-sqs-sns-subscription-queue
 ```
