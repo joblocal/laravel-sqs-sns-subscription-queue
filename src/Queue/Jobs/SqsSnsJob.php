@@ -37,9 +37,9 @@ class SqsSnsJob extends SqsJob
     {
         $body = json_decode($job['Body'], true);
 
-        if (isset($body['Subject']) && array_key_exists($body['Subject'], $routes)) {
+        if (isset($body['TopicArn']) && array_key_exists($body['TopicArn'], $routes)) {
             // Find name of command in queue routes
-            $commandName = $routes[$body['Subject']];
+            $commandName = $routes[$body['TopicArn']];
 
             // restructure job body
             $job['Body'] = json_encode([
@@ -47,7 +47,7 @@ class SqsSnsJob extends SqsJob
                 'data' => [
                     'commandName' => $commandName,
                     'command' => serialize(new $commandName(
-                        $body['Subject'],
+                        $body['TopicArn'],
                         json_decode($body['Message'], true)
                     ))
                 ],
