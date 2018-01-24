@@ -29,8 +29,11 @@ You'll need to configure the queue connection in your config/queue.php
     'queue'  => env('QUEUE_URL', 'your-queue-url'),
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     'routes' => [
-        // specify routes to your queue jobs eg.
+        // you can use the "Subject" field
         'Subject' => 'App\\Jobs\\YourJob',
+        // or the "TopicArn" of your SQS message
+        'TopicArn:123' => 'App\\Jobs\\YourJob',
+        // to specify which job class should handle the job
     ],
   ],
 ],
@@ -38,6 +41,7 @@ You'll need to configure the queue connection in your config/queue.php
 
 Once the sqs-sns queue connector is configured you can start
 using it by setting your queue driver to 'sqs-sns'.
+
 
 ## Installation
 
