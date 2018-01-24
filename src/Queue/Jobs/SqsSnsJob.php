@@ -37,10 +37,20 @@ class SqsSnsJob extends SqsJob
     {
         $body = json_decode($job['Body'], true);
 
-        if (isset($body['Subject']) && array_key_exists($body['Subject'], $routes)) {
-            // Find name of command in queue routes
-            $commandName = $routes[$body['Subject']];
+        $commandName = null;
 
+        // available parameters to route your jobs by
+        $possibleRouteParams = ['TopicArn', 'Subject'];
+
+        foreach ($possibleRouteParams as $param) {
+            if (isset($body[$param]) && array_key_exists($body[$param], $routes)) {
+                // Find name of command in queue routes using the param field
+                $commandName = $routes[$body[$param]];
+                break;
+            }
+        }
+
+        if ($commandName !== null) {
             // restructure job body
             $job['Body'] = json_encode([
                 'job' => CallQueuedHandler::class . '@call',
