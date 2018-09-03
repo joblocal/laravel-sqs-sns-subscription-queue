@@ -56,10 +56,10 @@ class SqsSnsJob extends SqsJob
                 'job' => CallQueuedHandler::class . '@call',
                 'data' => [
                     'commandName' => $commandName,
-                    'command' => serialize(new $commandName(
-                        $body['Subject'],
-                        json_decode($body['Message'], true)
-                    ))
+                    'command' => serialize($this->container->make($commandName, [
+                        'subject' => $body['Subject'],
+                        'payload' => json_decode($body['Message'], true)
+                    ]))
                 ],
             ]);
         }
