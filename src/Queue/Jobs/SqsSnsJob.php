@@ -18,6 +18,7 @@ class SqsSnsJob extends SqsJob
      * @param array $job
      * @param string $connectionName
      * @param array $routes
+     * @return void
      */
     public function __construct(Container $container, SqsClient $sqs, array $job, $connectionName, $queue, array $routes)
     {
@@ -33,7 +34,7 @@ class SqsSnsJob extends SqsJob
      * @param array $routes
      * @return array
      */
-    private function resolveSnsSubscription(array $job, array $routes)
+    protected function resolveSnsSubscription(array $job, array $routes)
     {
         $body = json_decode($job['Body'], true);
 
@@ -51,21 +52,46 @@ class SqsSnsJob extends SqsJob
         }
 
         if ($commandName !== null) {
-            // restructure job body
+            // If there is a command available, we will resolve the job instance for it from
+            // the service container, passing in the subject and the payload of the
+            // notification.
+
+            $command = $this->makeCommand($commandName, $body);
+
+            // The instance for the job will then be serialized and the body of
+            // the job is reconstructed.
+
             $job['Body'] = json_encode([
                 'job' => CallQueuedHandler::class . '@call',
-                'data' => [
-                    'commandName' => $commandName,
-                    'command' => serialize($this->container->make($commandName, [
-                        'subject' => $body['Subject'],
-                        'payload' => json_decode($body['Message'], true)
-                    ]))
-                ],
+                'data' => compact('commandName', 'command'),
             ]);
         }
 
         return $job;
     }
+
+    /**
+     * Make the serialized command.
+     *
+     * @param string $commandName
+     * @param array  $body
+     * @return string
+     */
+    protected function makeCommand($commandName, $body)
+    {
+        $payload = json_decode($body['Message'], true);
+
+        $data = [
+            'subject' => $body['Subject'],
+            'payload' => $payload
+        ];
+
+        $instance = $this->container->make($commandName, $data);
+
+        return serialize($instance);
+    }
+
+
 
     /**
      * Get the underlying raw SQS job.
