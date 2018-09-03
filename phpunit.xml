@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="./vendor/autoload.php"
-         colors="false"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false">
-
+<phpunit
+    backupGlobals="false"
+    backupStaticAttributes="false"
+    bootstrap="./vendor/autoload.php"
+    colors="false"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnFailure="false"
+>
     <testsuites>
         <testsuite name="Joblocal Laravel SQS SNS Subscription Queue Test Suite">
             <directory>./tests/</directory>

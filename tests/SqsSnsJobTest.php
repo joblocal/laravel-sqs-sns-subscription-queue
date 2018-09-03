@@ -12,7 +12,6 @@ class SqsSnsJobTest extends TestCase
 {
     private $sqsClient;
     private $container;
-    private $sqsSnsJob;
 
     protected function setUp()
     {
@@ -21,8 +20,12 @@ class SqsSnsJobTest extends TestCase
             ->getMock();
 
         $this->container = $this->createMock(Container::class);
+    }
 
+    private function createSqsSnsJob($routes = [])
+    {
         $body = [
+            'TopicArn' => 'TopicArn:123456',
             'Subject' => 'Subject#action',
             'Message' => 'The Message',
         ];
@@ -30,40 +33,76 @@ class SqsSnsJobTest extends TestCase
             'Body' => json_encode($body),
         ];
 
-        $routes = [
-            'Subject#action' => '\\stdClass',
-        ];
-
-        $this->sqsSnsJob = new SqsSnsJob(
+        return new SqsSnsJob(
             $this->container,
             $this->sqsClient,
-            'default_queue',
             $payload,
+            'connection_name',
+            'default_queue',
             $routes
         );
     }
 
+    private function getSqsSnsJobSubjectRoute()
+    {
+        return $this->createSqsSnsJob([
+            'Subject#action' => '\\stdClass',
+        ]);
+    }
+
+    private function getSqsSnsJobTopicRoute()
+    {
+        return $this->createSqsSnsJob([
+            'TopicArn:123456' => '\\stdClass',
+        ]);
+    }
+
+
     public function testWillResolveSqsSubscriptionJob()
     {
-        $jobPayload = $this->sqsSnsJob->payload();
+        $jobPayload = $this->getSqsSnsJobSubjectRoute()->payload();
 
         $this->assertEquals('Illuminate\\Queue\\CallQueuedHandler@call', $jobPayload['job']);
     }
 
     public function testWillResolveSqsSubscriptionCommandName()
     {
-        $jobPayload = $this->sqsSnsJob->payload();
+        $jobPayload = $this->getSqsSnsJobSubjectRoute()->payload();
 
         $this->assertEquals('\\stdClass', $jobPayload['data']['commandName']);
     }
 
     public function testWillResolveSqsSubscriptionCommand()
     {
-        $jobPayload = $this->sqsSnsJob->payload();
+        $jobPayload = $this->getSqsSnsJobSubjectRoute()->payload();
         $expectedCommand = serialize(new \stdClass);
 
         $this->assertEquals($expectedCommand, $jobPayload['data']['command']);
     }
+
+
+    public function testWillResolveSqsSubscriptionJobTopicRoute()
+    {
+        $jobPayload = $this->getSqsSnsJobTopicRoute()->payload();
+
+        $this->assertEquals('Illuminate\\Queue\\CallQueuedHandler@call', $jobPayload['job']);
+    }
+
+    public function testWillResolveSqsSubscriptionCommandNameTopicRoute()
+    {
+        $jobPayload = $this->getSqsSnsJobTopicRoute()->payload();
+
+        $this->assertEquals('\\stdClass', $jobPayload['data']['commandName']);
+    }
+
+    public function testWillResolveSqsSubscriptionCommandTopicRoute()
+    {
+        $jobPayload = $this->getSqsSnsJobTopicRoute()->payload();
+        $expectedCommand = serialize(new \stdClass);
+
+        $this->assertEquals($expectedCommand, $jobPayload['data']['command']);
+    }
+
 
     public function testWillLeaveDefaultSqsJobUntouched()
     {
@@ -74,10 +113,11 @@ class SqsSnsJobTest extends TestCase
         $defaultSqsJob = new SqsSnsJob(
             $this->container,
             $this->sqsClient,
-            'default_queue',
             [
                 'Body' => json_encode($body),
             ],
+            'connection_name',
+            'default_queue',
             []
         );
 
