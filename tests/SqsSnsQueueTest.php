@@ -46,7 +46,10 @@ class SqsSnsQueueTest extends TestCase
     public function testWillCallReceiveMessage()
     {
         $this->sqsClient->expects($this->once())
-            ->method('receiveMessage');
+            ->method('receiveMessage')
+            ->willReturn([
+                'Messages' => [],
+            ]);
 
         $queue = new SqsSnsQueue($this->sqsClient, 'default_queue');
         $queue->setContainer($this->createMock(Container::class));

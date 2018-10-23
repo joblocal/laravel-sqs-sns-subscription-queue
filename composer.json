@@ -13,6 +13,11 @@
       "name": "Julius Liebert",
       "email": "julius.liebert@joblocal.de",
       "role": "Developer"
+    },
+    {
+      "name": "Bastian Hofmann",
+      "email": "bastian.hofmann@joblocal.de",
+      "role": "Developer"
     }
   ],
   "require": {
@@ -39,10 +44,10 @@
   },
   "scripts": {
     "lint": [
-      "./vendor/bin/phpcs --standard=phpcs.xml --colors -p ."
+      "phpcs --standard=phpcs.xml --colors -p ."
     ],
     "test": [
-      "./vendor/bin/phpunit-randomizer -c phpunit.xml --order rand"
+      "phpunit-randomizer -c phpunit.xml --order rand"
     ]
   },
   "minimum-stability": "stable"

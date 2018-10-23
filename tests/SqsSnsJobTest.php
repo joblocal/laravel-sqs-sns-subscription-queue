@@ -19,7 +19,7 @@ class SqsSnsJobTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->container = $this->createMock(Container::class);
+        $this->container = new Container;
     }
 
     private function createSqsSnsJob($routes = [])
