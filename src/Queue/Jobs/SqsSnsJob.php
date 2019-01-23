@@ -47,7 +47,7 @@ class SqsSnsJob extends SqsJob
         $commandName = null;
 
         // available parameters to route your jobs by
-        $possibleRouteParams = ['TopicArn', 'Subject'];
+        $possibleRouteParams = ['Subject', 'TopicArn'];
 
         foreach ($possibleRouteParams as $param) {
             if (isset($body[$param]) && array_key_exists($body[$param], $routes)) {
