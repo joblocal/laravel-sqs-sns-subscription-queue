@@ -13,7 +13,7 @@ class SqsSnsJobTest extends TestCase
     private $sqsClient;
     private $container;
 
-    protected function setUp()
+    protected function setUp():void
     {
         $this->sqsClient = $this->getMockBuilder(SqsClient::class)
             ->disableOriginalConstructor()
