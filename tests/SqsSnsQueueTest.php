@@ -13,7 +13,7 @@ class SqsSnsQueueTest extends TestCase
 {
     private $sqsClient;
 
-    protected function setUp()
+    protected function setUp():void
     {
         $this->sqsClient = $this->getMockBuilder(SqsClient::class)
             ->disableOriginalConstructor()

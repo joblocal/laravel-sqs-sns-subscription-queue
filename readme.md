@@ -14,8 +14,8 @@ Understand that this package will not handle publishing to SNS, please use the [
 
 ## Requirements
 
--   Laravel (tested with version 5.6)
--   or Lumen (tested with version 5.6)
+-   Laravel (tested with version 5.8)
+-   or Lumen (tested with version 5.8)
 
 
 ## Usage
