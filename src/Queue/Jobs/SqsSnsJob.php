@@ -87,9 +87,10 @@ class SqsSnsJob extends SqsJob
     protected function makeCommand($commandName, $body)
     {
         $payload = json_decode($body['Message'], true);
+        $subject = key_exists('Subject', $body) ? $body['Subject'] : '';
 
         $data = [
-            'subject' => $body['Subject'],
+            'subject' => $subject,
             'payload' => $payload
         ];
 
