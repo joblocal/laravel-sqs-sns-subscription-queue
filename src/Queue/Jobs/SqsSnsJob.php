@@ -89,6 +89,7 @@ class SqsSnsJob extends SqsJob
         $payload = json_decode($body['Message'], true);
         $subject = key_exists('Subject', $body) ? $body['Subject'] : '';
 
+        
         $data = [
             'subject' => $subject,
             'payload' => $payload
