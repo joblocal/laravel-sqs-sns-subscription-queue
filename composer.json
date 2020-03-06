@@ -1,5 +1,5 @@
 {
-  "name": "joblocal/laravel-sqs-sns-subscription-queue",
+  "name": "jagarzonpapp/laravel-sqs-sns-subscription-queue",
   "description": "A simple Laravel service provider which adds a new queue connector to handle SNS subscription queues.",
   "license": "MIT",
   "keywords": ["laravel", "lumen", "queue", "sns subscription", "aws", "sqs", "sns"],
