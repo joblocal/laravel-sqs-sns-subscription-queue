@@ -89,7 +89,7 @@ class SqsSnsJob extends SqsJob
         $payload = json_decode($body['Message'], true);
 
         $data = [
-            'subject' => $body['Subject'],
+            'subject' => (isset($body['Subject'])) ? $body['Subject'] : '',
             'payload' => $payload
         ];
 
