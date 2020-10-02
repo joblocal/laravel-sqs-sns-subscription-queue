@@ -68,6 +68,7 @@ class SqsSnsJob extends SqsJob
             // the job is reconstructed.
 
             $job['Body'] = json_encode([
+                'uuid' => $body['MessageId'],
                 'displayName' => $commandName,
                 'job' => CallQueuedHandler::class . '@call',
                 'data' => compact('commandName', 'command'),

@@ -25,6 +25,7 @@ class SqsSnsJobTest extends TestCase
     private function createSqsSnsJob($routes = [])
     {
         $body = [
+            'MessageId' => '4f4749d6-b004-478a-bc38-d934124914b2',
             'TopicArn' => 'TopicArn:123456',
             'Subject' => 'Subject#action',
             'Message' => 'The Message',
