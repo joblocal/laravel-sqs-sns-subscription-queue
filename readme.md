@@ -47,9 +47,9 @@ You'll need to configure the queue connection in your config/queue.php
 'connections' => [
   'sqs-sns' => [
     'driver' => 'sqs-sns',
-    'key'    => env('AWS_ACCESS_KEY', 'your-public-key'),
-    'secret' => env('AWS_SECRET_ACCESS_KEY', 'your-secret-key'),
-    'queue'  => env('QUEUE_URL', 'your-queue-url'),
+    'key'    => env('AWS_ACCESS_KEY_ID'),
+    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+    'queue'  => env('SQS_QUEUE', 'your-queue-url'),
     'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     'routes' => [
         // you can use the "Subject" field
