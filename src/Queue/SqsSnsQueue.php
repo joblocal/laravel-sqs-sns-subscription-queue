@@ -47,14 +47,31 @@ class SqsSnsQueue extends SqsQueue
         ]);
 
         if (is_array($response['Messages']) && count($response['Messages']) > 0) {
-            return new SqsSnsJob(
-                $this->container,
-                $this->sqs,
-                $response['Messages'][0],
-                $this->connectionName,
-                $queue,
-                $this->routes
-            );
+            if ($this->routeExists($response['Messages'][0])) {
+                return new SqsSnsJob(
+                    $this->container,
+                    $this->sqs,
+                    $response['Messages'][0],
+                    $this->connectionName,
+                    $queue,
+                    $this->routes
+                );
+            }
         }
+    }
+
+    /**
+     * Check if subject exist within the routes.
+     * This skips creating a job for messages from
+     * topics that publish multiple different messages.
+     *
+     * @param array $message
+     * @return bool
+     */
+    protected function routeExists(array $message)
+    {
+        $body = json_decode($message['Body'], true);
+
+        return isset($body['Subject']) && array_key_exists($body['Subject'], $this->routes);
     }
 }

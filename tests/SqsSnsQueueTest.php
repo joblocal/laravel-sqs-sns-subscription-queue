@@ -59,8 +59,17 @@ class SqsSnsQueueTest extends TestCase
 
     public function testWillPopMessageOffQueue()
     {
+        $body = json_encode(
+            [
+                'MessageId' => 'bc065409-fe1b-59c2-b17c-0e056cd19d5d',
+                'TopicArn' => 'arn:aws:sns',
+                'Subject' => 'Subject#action',
+                'Message' => '',
+            ]
+        );
+
         $message = [
-            'Body' => 'The Body',
+            'Body' => $body,
         ];
 
         $this->sqsClient->method('receiveMessage')->willReturn([
@@ -69,12 +78,24 @@ class SqsSnsQueueTest extends TestCase
             ],
         ]);
 
-        $queue = new SqsSnsQueue($this->sqsClient, 'default_queue');
+        $queue = new SqsSnsQueue($this->sqsClient, 'default_queue', '', [
+            "Subject#action" => '\\Job',
+        ]);
+
         $queue->setContainer($this->createMock(\Illuminate\Container\Container::class));
 
         $job = $queue->pop();
+        $expectedRawBody = [
+            'uuid' =>  'bc065409-fe1b-59c2-b17c-0e056cd19d5d',
+            'displayName' => '\\Job',
+            'job' => 'Illuminate\Queue\CallQueuedHandler@call',
+            'data' => [
+                'commandName' => '\\Job',
+                'command' => 'N;',
+            ],
+        ];
 
         $this->assertInstanceOf(SqsSnsJob::class, $job);
-        $this->assertEquals($message['Body'], $job->getRawBody());
+        $this->assertEquals(json_encode($expectedRawBody), $job->getRawBody());
     }
 }
