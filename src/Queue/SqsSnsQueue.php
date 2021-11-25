@@ -47,7 +47,7 @@ class SqsSnsQueue extends SqsQueue
         ]);
 
         if (is_array($response['Messages']) && count($response['Messages']) > 0) {
-            if ($this->routeExists($response['Messages'][0])) {
+            if ($this->routeExists($response['Messages'][0]) || $this->classExists($response['Messages'][0])) {
                 return new SqsSnsJob(
                     $this->container,
                     $this->sqs,
@@ -73,5 +73,19 @@ class SqsSnsQueue extends SqsQueue
         $body = json_decode($message['Body'], true);
 
         return isset($body['Subject']) && array_key_exists($body['Subject'], $this->routes);
+    }
+
+    /**
+     * Check if the job class
+     * you're trying to trigger exists.
+     *
+     * @param array $message
+     * @return bool
+     */
+    protected function classExists(array $message)
+    {
+        $body = json_decode($message['Body'], true);
+
+        return isset($body['data']['comandName']) && class_exists($body['data']['commandName']);
     }
 }
