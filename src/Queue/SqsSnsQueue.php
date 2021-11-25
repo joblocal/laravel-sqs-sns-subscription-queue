@@ -86,6 +86,6 @@ class SqsSnsQueue extends SqsQueue
     {
         $body = json_decode($message['Body'], true);
 
-        return isset($body['data']['comandName']) && class_exists($body['data']['commandName']);
+        return isset($body['data']['commandName']) && class_exists($body['data']['commandName']);
     }
 }
