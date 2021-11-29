@@ -78,7 +78,15 @@ class SqsSnsQueue extends SqsQueue
     {
         $body = json_decode($message['Body'], true);
 
-        return isset($body['Subject']) && array_key_exists($body['Subject'], $this->routes);
+        $possibleRouteParams = ['Subject', 'TopicArn'];
+
+        foreach ($possibleRouteParams as $param) {
+            if (isset($body[$param]) && array_key_exists($body[$param], $this->routes)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
