@@ -56,6 +56,12 @@ class SqsSnsQueue extends SqsQueue
                     $queue,
                     $this->routes
                 );
+            } else {
+                // remove unwanted messages from topics with multiple messages
+                $this->sqs->deleteMessage([
+                    'QueueUrl' => $queue, // REQUIRED
+                    'ReceiptHandle' => $response['Messages'][0]['ReceiptHandle'] // REQUIRED
+                ]);
             }
         }
     }
